@@ -1,0 +1,12 @@
+.auth-section{
+    min-height: 100vh;
+    margin: 0%;
+    background-color: #f1f2f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.auth-container-1{
+    padding: 20px;
+    margin-right: 30px;
+}

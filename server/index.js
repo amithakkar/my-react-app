@@ -16,7 +16,10 @@ app.use('/user', userRoutes)
 
 const PORT = process.env.PORT || 5000
 
-const CONNECTION_URL="mongodb+srv://admin:admin@stack-overflow-clone.buxtes3.mongodb.net/?retryWrites=true&w=majority"
+mongoose.set("strictQuery", true);
+
+const CONNECTION_URL="mongodb+srv://admin:admin@my-react-app.m4toepf.mongodb.net/?retryWrites=true&w=majority"
+
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => app.listen(PORT,() => {console.log(`server running on port ${PORT}`)} ))
-.catch((err) => console.log(ree.message))
+.catch((err) => console.log(err.message))

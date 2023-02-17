@@ -1,15 +1,19 @@
 import React from 'react'
 import { useParams,Link } from 'react-router-dom'
+import {useSelector} from 'react-redux'
+
 import upvote from '../../assets/caret-up-solid.svg'
 import downvote from '../../assets/caret-down-solid.svg'
 import './Questions.css'
 import Avatar from '../../components/Avatar'
 import DisplayAnswer from './DisplayAnswer'
+
+
 const QuestionDetails = () => {
 
     const {id} = useParams()
-    
-    var questionList = [{
+    const questionList = useSelector(state => state.questionsReducer )
+    /*var questionList = [{
         _id: '1',
         upvotes:3,
         downVotes:2,
@@ -60,16 +64,16 @@ const QuestionDetails = () => {
             answeredOn: 'jan 2',
             userId: 2,
         }]
-    }]
+    }]*/
 
     return(
         <div className='question-details-page'>
             {
-                questionList === null ?
-                <h1>Loading...</h1> :
+                questionList.data === null ?
+                <h1>Empty Questionlist</h1> :
                 <>
                     { 
-                        questionList.filter(question => question._id === id).map(question =>(
+                        questionList.data.filter(question => question._id === id).map(question =>(
                             <div key={question._id}>  
                                                             
                                 <section className='question-details-container'>
@@ -78,7 +82,9 @@ const QuestionDetails = () => {
                                     <div className='question-details-container-2'>
                                         <div className="question-votes">
                                             <img src={upvote} alt="" width='18' />
-                                            <p>{question.upvotes - question.downVotes}</p>
+                                            <p>{question.upVote?.length - question.downVote?.length || 0}</p>
+
+
                                             <img src={downvote} alt="" width='18' />
                                         </div>
                                         <div style={{width: "100%"}}>

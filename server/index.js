@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose  from 'mongoose'
 import cors from 'cors'
 import userRoutes from './routes/users.js'
+import questionRoutes from './routes/Questions.js'
 
 const app = express();
 app.use(express.json({limit: "30mb", extended: true}))
@@ -13,6 +14,7 @@ app.get('/',(req,res) => {
 })
 
 app.use('/user', userRoutes)
+app.use('/questions',questionRoutes)
 
 const PORT = process.env.PORT || 5000
 
@@ -22,4 +24,4 @@ const CONNECTION_URL="mongodb+srv://admin:admin@my-react-app.m4toepf.mongodb.net
 
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => app.listen(PORT,() => {console.log(`server running on port ${PORT}`)} ))
-.catch((err) => console.log(err.message))
+.catch((error) => console.log(error))

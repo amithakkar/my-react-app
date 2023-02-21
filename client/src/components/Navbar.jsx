@@ -30,7 +30,7 @@ const Navbar = () => {
                 User === null ?
                 <Link to='/Auth' className='nav-item nav-links'>Log in</Link>:
                 <>
-                    <Avatar><Link className='uname' to='/User'>A</Link></Avatar>
+                    <Avatar><Link className='uname' to='/User'>{User.result.name.charAt(0).toUpperCase()}</Link></Avatar>
                     <button className='nav-item nav-links'>Log Out</button>
                 </>
                 }

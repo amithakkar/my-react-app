@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 import Questions from "../models/Questions.js";
 
 export const postAnswer = async (req,res) => {
@@ -9,10 +9,10 @@ export const postAnswer = async (req,res) => {
     }
     updateNoOfQuestions(_id, noOfAnswers)
     try{
-        const  updateQuestion = await Questions.findByIdAndUpdate(_id,{$addToSet: {'answer':[{answerBody, userAnswered, userId:req.userId}]}})
-        req.status(200).json(updateQuestion)
+        const updateQuestion = await Questions.findByIdAndUpdate(_id,{$addToSet: {'answer':[{answerBody, userAnswered, userId:req.userId}]}})
+        res.status(200).json(updateQuestion)
     }catch(error){
-        res.status(400).json(error)
+        res.status(400).json('error in updating')
     }
 }
 

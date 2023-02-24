@@ -16,9 +16,9 @@ const AskQuestion = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         //console.log({User})
-        dispatch(askQuestion({questionTitle, questionBody, questionTags, userPosted:User.result.name}, navigate))
+        dispatch(askQuestion({questionTitle, questionBody, questionTags, userPosted:User?.result.name, userId: User?.result?._id}, navigate))
     }
-
+    
     /*const handleEnter = (e) => {
         if(e.key === 'Enter'){
             setQuestionBody(questionBody + "\n")

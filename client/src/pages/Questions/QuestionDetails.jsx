@@ -1,14 +1,15 @@
 import React,{ useState } from 'react'
-import { useParams,Link, useNavigate } from 'react-router-dom'
+import { useParams,Link, useNavigate, useLocation } from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import moment from 'moment'
+import copy from 'copy-to-clipboard'
 
 import upvote from '../../assets/caret-up-solid.svg'
 import downvote from '../../assets/caret-down-solid.svg'
 import './Questions.css'
 import Avatar from '../../components/Avatar'
 import DisplayAnswer from './DisplayAnswer'
-import { postAnswer } from '../../actions/question'
+import { postAnswer , deleteQuestion } from '../../actions/question'
 
 const QuestionDetails = () => {
 
@@ -70,6 +71,9 @@ const QuestionDetails = () => {
     const Navigate = useNavigate()
     const dispatch = useDispatch()
     const User = useSelector((state) => (state.currentUserReducer))
+    const location = useLocation()
+    const url = 'http://localhost:3000';
+
     const handlePostAns =(e, answerLength) => {
         e.preventDefault()
         if (User === null){
@@ -79,9 +83,18 @@ const QuestionDetails = () => {
             if(Answer === '') {
                 alert('Enter an answer before submitting')
             }else{
-                dispatch(postAnswer({ id, noOfAnswers: answerLength + 1, answerBody: Answer, userAnswered: User.result.name}))
+                dispatch(postAnswer({ id, noOfAnswers: answerLength + 1, answerBody: Answer, userAnswered: User.result.name, userId:User.result._id}))
             }
         }
+    }
+
+    const handleShare = () => {
+        copy(url+location.pathname)
+        alert('copied url: '+ url+location.pathname);
+    }
+
+    const handleDelete =() => {
+        dispatch(deleteQuestion(id, Navigate))
     }
 
     return(
@@ -116,8 +129,13 @@ const QuestionDetails = () => {
                                         </div>
                                         <div className='question-action-user'>
                                             <div>
-                                                <button type='button'>Share</button>
-                                                <button type='button'>Delete</button>
+                                                <button type='button' onClick={handleShare}>Share</button>
+                                                {
+                                                    User?.result?._id === question?.userId && (
+                                                        <button type='button' onClick={handleDelete} >Delete</button>
+                                                    )
+                                                }
+                                                
                                             </div>
                                             <div>
                                                 <p>asked {moment(question.askedOn).fromNow()}</p>
@@ -136,7 +154,7 @@ const QuestionDetails = () => {
                                     question.noOfAnswers !== 0 && (
                                         <section>
                                             <h3>{question.noOfAnswers} Answers</h3>
-                                            <DisplayAnswer key={question._id} question={question} />
+                                            <DisplayAnswer key={question._id} question={question} handleShare={handleShare} />
 
                                         </section>
                                     )

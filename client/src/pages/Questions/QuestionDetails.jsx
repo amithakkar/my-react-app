@@ -9,7 +9,7 @@ import downvote from '../../assets/caret-down-solid.svg'
 import './Questions.css'
 import Avatar from '../../components/Avatar'
 import DisplayAnswer from './DisplayAnswer'
-import { postAnswer , deleteQuestion } from '../../actions/question'
+import { postAnswer , deleteQuestion , voteQuestion} from '../../actions/question'
 
 const QuestionDetails = () => {
 
@@ -96,6 +96,14 @@ const QuestionDetails = () => {
     const handleDelete =() => {
         dispatch(deleteQuestion(id, Navigate))
     }
+    
+    const handleUpVote = () => {        
+        dispatch(voteQuestion(id, 'upVote', User.result._id))
+    }  
+    
+    const handleDownVote = () => {
+        dispatch(voteQuestion(id, 'downVote', User.result._id))
+    }  
 
     return(
         <div className='question-details-page'>
@@ -112,11 +120,9 @@ const QuestionDetails = () => {
                                     
                                     <div className='question-details-container-2'>
                                         <div className="question-votes">
-                                            <img src={upvote} alt="" width='18' />
+                                            <img src={upvote} alt="" width='18' onClick={handleUpVote} />
                                             <p>{question.upVote?.length - question.downVote?.length || 0}</p>
-
-
-                                            <img src={downvote} alt="" width='18' />
+                                            <img src={downvote} alt="" width='18' onClick={handleDownVote} />
                                         </div>
                                         <div style={{width: "100%"}}>
                                         <p className='question-body'>{question.questionBody}</p>

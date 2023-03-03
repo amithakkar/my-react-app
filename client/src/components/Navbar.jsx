@@ -1,19 +1,35 @@
 import React , {useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
+import decode from 'jwt-decode'
 
 import search from '../assets/searchicon.svg'
 import Avatar from '../components/Avatar'
 //import Button from '../components/Button'
 import './Navbar.css'
 import { setCurrentUser } from '../actions/currentUser'
+
 const Navbar = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     var User = useSelector((state) => (state.currentUserReducer))
     //console.log(User)
+         const handleLogout = () => {
+            dispatch({type: 'LOGOUT'});
+            navigate('/');
+            dispatch(setCurrentUser(null));
+        }
     useEffect(() => {
-        dispatch(setCurrentUser(JSON.parse(localStorage.getItem('profile'))))
+        const token = User?.token
+        if(token){
+            const decodeToken = decode(token)
+            if(decodeToken.exp * 1000 < new Date().getTime()){
+                handleLogout()
+            }
+        }
+        dispatch(setCurrentUser( JSON.parse(localStorage.getItem('profile'))))
     },[dispatch])
+
     return(
         <nav className='nav1'>
             <div className='navbar'>
@@ -31,7 +47,7 @@ const Navbar = () => {
                 <Link to='/Auth' className='nav-item nav-links'>Log in</Link>:
                 <>
                     <Avatar><Link className='uname' to='/User'>{User.result.name.charAt(0).toUpperCase()}</Link></Avatar>
-                    <button className='nav-item nav-links'>Log Out</button>
+                    <button className='nav-item nav-links' onClick={handleLogout }>Log Out</button>
                 </>
                 }
             </div>

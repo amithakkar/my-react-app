@@ -11,7 +11,8 @@ export const signup = async (req, res) => {
             }
 
             const hashedPassword = await bcrypt.hash(password, 12)
-            const newUSer = await users.create({name, email, password: hashedPassword})
+            const join = Date.now();
+            const newUSer = await users.create({name, email, password: hashedPassword, joinedOn: join})
             const token = jwt.sign({email: newUSer.email, id:newUSer._id},"test",{expiresIn: '1h'});
             
             res.status(200).json({result: newUSer, token})

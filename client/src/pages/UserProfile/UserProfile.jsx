@@ -8,6 +8,7 @@ import { faBirthdayCake, faPen} from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 import EditProfileForm from "./EditProfileForm";
 import ProfileBio from "./ProfileBio";
+import './UsersProfile.css'
 
 const UserProfile = () => {
 
@@ -15,8 +16,8 @@ const UserProfile = () => {
     const users = useSelector((state) => state.usersReducer)
     const currentProfile = users?.filter((user) => user._id === id)[0] 
     //console.log(currentProfile);
-    const currentUser = useSelector((state) => state.currentUserReducer)
-    
+    const currentUser = useSelector((state) => state.currentUserReducer) 
+    //console.log(currentUser);   
     const [Switch , setSwitch] = useState(false)
 
     return (
@@ -45,9 +46,9 @@ const UserProfile = () => {
                     <>
                         {
                             Switch ? (
-                                <EditProfileForm />
+                                <EditProfileForm currentUser={currentUser} setSwitch={setSwitch} />
                             ) : (
-                                <ProfileBio />
+                                <ProfileBio currentProfile={currentProfile} />
                             )
                         }
                     </>
